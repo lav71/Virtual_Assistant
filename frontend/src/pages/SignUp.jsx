@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import bg from "../images/ai1.jpg";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
-import { userDataContext } from "../context/userContext";
+import { userDataContext } from "../context/UserContext.jsx";
 import axios from "axios";
 
 const SignUp = () => {

@@ -1,7 +1,7 @@
 import { BiImageAdd } from "react-icons/bi";
 import { useContext, useRef } from "react";
 import Card from "../components/Card";
-import { userDataContext } from "../context/userContext";
+import { userDataContext } from "../context/UserContext.jsx";
 import { useNavigate } from "react-router-dom";
 
 import image1 from "../images/image1.png";
