@@ -1,12 +1,12 @@
+import "dotenv/config";
+
 import express from "express";
-import dotenv from "dotenv";
-dotenv.config();
 import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.routes.js";
 import cors from "cors";
 import userRouter from "./routes/userRoutes.js";
-import geminiResponse from "./gemini.js";
+import groqResponse from "./groq.js";
 
 const app = express();
 
@@ -17,8 +17,6 @@ app.use(
     })
 );
 
-const port = process.env.PORT;
-
 app.use(express.json());
 app.use(cookieParser());
 
@@ -28,16 +26,32 @@ app.use("/api/user", userRouter);
 connectDB();
 
 app.get("/", (req, res) => {
-    res.send("Hello");
+    res.send("Virtual Assistant Backend is Running");
 });
 
-app.get("/gemini", async (req, res) => {
-    let prompt = req.query.prompt;
+app.get("/groq", async (req, res) => {
+    try {
+        const prompt = req.query.prompt;
 
-    let data = await geminiResponse(prompt);
+        if (!prompt) {
+            return res.status(400).json({
+                message: "Prompt is required"
+            });
+        }
 
-    res.json(data);
+        const data = await groqResponse(prompt);
+
+        res.json(data);
+    } catch (error) {
+        console.error("Groq Route Error:", error);
+
+        res.status(500).json({
+            message: "Groq API error"
+        });
+    }
 });
+
+const port = process.env.PORT || 5000;
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
