@@ -26,6 +26,11 @@ export const getCurrentUser = async (req, res) => {
 
 export const updateAssistant = async (req, res) => {
     try {
+
+        console.log("========== UPDATE ASSISTANT ==========");
+        console.log("User ID:", req.user_id);
+        console.log("Body:", req.body);
+        console.log("File:", req.file);
         const { assistantName, imageUrl } = req.body;
 
         if (!assistantName || !assistantName.trim()) {
@@ -69,6 +74,8 @@ export const updateAssistant = async (req, res) => {
             });
         }
 
+        console.log("Assistant updated successfully");
+
         return res.status(200).json({
             success: true,
             message: "Assistant updated successfully",
@@ -76,6 +83,10 @@ export const updateAssistant = async (req, res) => {
         });
 
     } catch (error) {
+
+        console.error("========== UPDATE ASSISTANT ERROR ==========");
+        console.error("Message:", error.message);
+        console.error("Stack:", error.stack);
         console.error("UPDATE ASSISTANT ERROR:", error);
 
         return res.status(500).json({
