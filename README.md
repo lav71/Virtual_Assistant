@@ -1,162 +1,351 @@
 # Virtual Assistant
 
-A full-stack AI-powered virtual assistant web application built with
-React, Vite, Node.js, Express.js, MongoDB, Cloudinary, and the Google
-Gemini API.
+A full-stack AI-powered virtual assistant web application built with React, Node.js, Express.js, MongoDB, JWT authentication, Cloudinary, and Google Gemini.
 
-## Live Deployment
+## Live Application
 
--   Frontend: Vercel
--   Backend: Render
--   Backend URL: https://virtual-assistant-backend-7hsm.onrender.com
--   Database: MongoDB Atlas
--   Image Storage: Cloudinary
--   AI Service: Google Gemini API
+- Frontend: https://virtual-assistant-black.vercel.app
+- Backend API: https://virtual-assistant-backend-7hsm.onrender.com
+- GitHub: https://github.com/lav71/Virtual_Assistant
 
-> Replace the frontend placeholder in this README with your actual
-> Vercel URL.
+## Overview
+
+Virtual Assistant is a full-stack web application that allows users to create an account, customize a personal AI assistant, interact through voice or text commands, and receive AI-powered responses.
+
+The application combines a React/Vite frontend with an Express/Node.js backend, MongoDB Atlas for persistent data, Cloudinary for assistant image storage, and Google Gemini for natural-language command processing.
 
 ## Features
 
--   User registration and login
--   JWT-based authentication
--   Protected routes
--   AI-powered assistant responses
--   Text interaction
--   Voice input using the browser Web Speech API where supported
--   Text-to-speech responses
--   Assistant customization
--   Assistant image upload
--   Cloudinary image management
--   MongoDB-based user data storage
--   REST API built with Express.js
--   Responsive React frontend
--   Production deployment using Vercel and Render
+### Authentication
 
-## Tech Stack
+- User registration and login
+- Password hashing with bcryptjs
+- JWT-based authentication
+- HTTP-only authentication cookies
+- Secure production cookie configuration
+- Protected API routes
+- Logout functionality
+- Current-user authentication checks
+
+### Assistant Customization
+
+- Custom assistant name
+- Built-in assistant image selection
+- Custom assistant image upload
+- Cloudinary image storage
+- Persistent assistant configuration in MongoDB
+
+### Voice Interaction
+
+- Browser-based speech recognition using the Web Speech API
+- Speech-to-text command processing
+- Text-to-speech responses where supported by the browser
+- Natural-language command handling
+
+### AI Command Processing
+
+Google Gemini is used to understand natural-language commands and return structured command information.
+
+Supported command categories include:
+
+- `get_date`
+- `get_time`
+- `get_day`
+- `get_month`
+- `google_search`
+- `youtube_search`
+- `youtube_play`
+- `general`
+- `calculator_open`
+- `facebook_open`
+- `instagram_open`
+- `weather-show`
+
+### User History
+
+User commands can be persisted in MongoDB as part of the user history.
+
+## Technology Stack
 
 ### Frontend
 
--   React.js
--   Vite
--   Tailwind CSS
--   React Router
--   Axios
--   Web Speech API
+- React
+- Vite
+- JavaScript
+- Tailwind CSS
+- React Router
+- Axios
+- React Icons
+- Web Speech API
+- Speech Synthesis API
 
 ### Backend
 
--   Node.js
--   Express.js
--   MongoDB
--   Mongoose
--   JWT
--   bcryptjs
--   Multer
--   Cloudinary
--   Google Gemini API
--   CORS
--   dotenv
+- Node.js
+- Express.js
+- MongoDB
+- Mongoose
+- JWT
+- bcryptjs
+- Cookie Parser
+- CORS
+- Multer
+- Cloudinary
+- Google Gemini API
+- Moment.js
+- dotenv
 
-### Deployment
+### Infrastructure
 
--   Vercel --- Frontend
--   Render --- Backend
--   MongoDB Atlas --- Database
--   Cloudinary --- Media storage
+- Vercel - Frontend deployment
+- Render - Backend deployment
+- MongoDB Atlas - Database
+- Cloudinary - Image storage
+- GitHub - Source control
+
+## Architecture
+
+```text
+User
+ |
+ v
+React + Vite Frontend
+ |
+ | HTTPS API requests
+ v
+Express + Node.js Backend
+ |
+ +------------------+-------------------+
+ |                  |                   |
+ v                  v                   v
+MongoDB Atlas    Cloudinary        Google Gemini
+ |                  |                   |
+ v                  v                   v
+User Data       Assistant Images   AI Command Processing
+```
 
 ## Project Structure
 
-``` text
+```text
 Virtual_Assistant/
-├── backend/
-│   ├── config/
-│   ├── controllers/
-│   ├── middleware/
-│   ├── models/
-│   ├── routes/
-│   ├── uploads/
-│   ├── index.js
-│   ├── package.json
-│   └── .env
-│
-├── frontend/
-│   ├── public/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   ├── context/
-│   │   ├── pages/
-│   │   ├── App.jsx
-│   │   └── main.jsx
-│   ├── package.json
-│   └── .env
-│
-└── README.md
+|
+|-- backend/
+|   |-- config/
+|   |   |-- cloudinary.js
+|   |   |-- db.js
+|   |   `-- token.js
+|   |-- controller/
+|   |   |-- auth.controller.js
+|   |   `-- user.controller.js
+|   |-- middleware/
+|   |   |-- isAuth.js
+|   |   `-- multer.js
+|   |-- models/
+|   |   `-- user.model.js
+|   |-- routes/
+|   |   |-- auth.routes.js
+|   |   `-- userRoutes.js
+|   |-- public/
+|   |-- gemini.js
+|   |-- index.js
+|   |-- package.json
+|   `-- .env
+|
+|-- frontend/
+|   |-- public/
+|   |-- src/
+|   |   |-- components/
+|   |   |   `-- Card.jsx
+|   |   |-- context/
+|   |   |   `-- UserContext.jsx
+|   |   |-- images/
+|   |   |-- pages/
+|   |   |   |-- Customize.jsx
+|   |   |   |-- Customize2.jsx
+|   |   |   |-- Home.jsx
+|   |   |   |-- LogIn.jsx
+|   |   |   `-- SignUp.jsx
+|   |   |-- App.jsx
+|   |   |-- index.css
+|   |   `-- main.jsx
+|   |-- index.html
+|   |-- package.json
+|   |-- vite.config.js
+|   |-- vercel.json
+|   `-- .env
+|
+`-- README.md
 ```
 
-## Application Architecture
+## API
 
-``` text
-User
-  |
-  v
-React + Vite Frontend
-  |
-  | HTTPS API Requests
-  v
-Express.js Backend
-  |
-  +----> MongoDB Atlas
-  |
-  +----> Cloudinary
-  |
-  +----> Gemini API
+### Authentication
+
+Base path:
+
+```text
+/api/auth
 ```
 
-## Prerequisites
+Register:
 
-Install the following before running the project:
-
--   Node.js 18 or newer
--   npm
--   Git
--   MongoDB Atlas account
--   Cloudinary account
--   Google Gemini API access
-
-Check your installation:
-
-``` bash
-node -v
-npm -v
-git --version
+```http
+POST /api/auth/signup
 ```
 
-## Local Installation
+Example body:
 
-Clone the repository:
-
-``` bash
-git clone https://github.com/lav71/Virtual_Assistant.git
-cd Virtual_Assistant
+```json
+{
+  "name": "User Name",
+  "email": "user@example.com",
+  "password": "your-password"
+}
 ```
+
+Login:
+
+```http
+POST /api/auth/login
+```
+
+Example body:
+
+```json
+{
+  "email": "user@example.com",
+  "password": "your-password"
+}
+```
+
+Logout:
+
+```http
+GET /api/auth/logout
+```
+
+Use the exact HTTP method configured by the current backend route if it differs.
+
+### User
+
+Base path:
+
+```text
+/api/user
+```
+
+Get current user:
+
+```http
+GET /api/user/current
+```
+
+Update assistant:
+
+```http
+POST /api/user/update
+```
+
+Ask assistant:
+
+```http
+POST /api/user/askToAssistant
+```
+
+Example:
+
+```json
+{
+  "command": "What is the current time?"
+}
+```
+
+Protected user routes require the authentication cookie.
+
+## Authentication Flow
+
+Authentication uses JWT stored in an HTTP-only cookie.
+
+```text
+Signup / Login
+      |
+      v
+Backend generates JWT
+      |
+      v
+HTTP-only Cookie
+      |
+      v
+Browser
+      |
+      | withCredentials: true
+      v
+Protected API
+      |
+      v
+isAuth Middleware
+      |
+      v
+JWT Verification
+      |
+      v
+req.user_id
+      |
+      v
+Controller
+```
+
+Production cookie configuration:
+
+```js
+{
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000
+}
+```
+
+Frontend authenticated requests use:
+
+```js
+withCredentials: true
+```
+
+## Image Upload Flow
+
+```text
+React Frontend
+      |
+      v
+Multer
+      |
+      v
+Temporary Upload
+      |
+      v
+Cloudinary
+      |
+      v
+Secure Image URL
+      |
+      v
+MongoDB
+```
+
+## Environment Variables
+
+Never commit real credentials or API keys to GitHub.
 
 ### Backend
 
-``` bash
-cd backend
-npm install
-```
-
 Create `backend/.env`:
 
-``` env
+```env
 PORT=5000
 MONGODB_URI=your_mongodb_atlas_connection_string
-JWT_SECRET=your_jwt_secret
-
-FRONTEND_URL=http://localhost:5173
+JWT_SECRET=your_secure_jwt_secret
+FRONTEND_URL=https://your-frontend-domain.vercel.app
 
 CLOUDINARY_CLOUD_NAME=your_cloudinary_cloud_name
 CLOUDINARY_API_KEY=your_cloudinary_api_key
@@ -166,21 +355,53 @@ GEMINI_API_KEY=your_gemini_api_key
 GEMINI_API_URL=your_gemini_api_url
 ```
 
-Start the backend:
+Use the exact variable names required by the backend source code.
 
-``` bash
+### Frontend
+
+For local development:
+
+```env
+VITE_API_URL=http://localhost:5000
+```
+
+For production:
+
+```env
+VITE_API_URL=https://virtual-assistant-backend-7hsm.onrender.com
+```
+
+Frontend environment variables must not contain server-side secrets.
+
+## Local Development
+
+### Requirements
+
+- Node.js
+- npm
+- MongoDB or MongoDB Atlas
+- Cloudinary account
+- Google Gemini API access
+- Git
+
+### Clone
+
+```bash
+git clone https://github.com/lav71/Virtual_Assistant.git
+cd Virtual_Assistant
+```
+
+### Backend
+
+```bash
+cd backend
+npm install
 npm run dev
 ```
 
-Production-style start:
+Local backend:
 
-``` bash
-npm start
-```
-
-Backend:
-
-``` text
+```text
 http://localhost:5000
 ```
 
@@ -188,141 +409,39 @@ http://localhost:5000
 
 Open another terminal:
 
-``` bash
+```bash
 cd frontend
 npm install
-```
-
-Create `frontend/.env`:
-
-``` env
-VITE_API_URL=http://localhost:5000
-```
-
-Start the frontend:
-
-``` bash
 npm run dev
 ```
 
-Frontend:
+Local frontend:
 
-``` text
+```text
 http://localhost:5173
 ```
 
-## Environment Variables
+## Production Build
 
-### Backend
+From `frontend`:
 
-  Variable                  Purpose
-  ------------------------- ------------------------------------
-  `PORT`                    Express server port
-  `MONGODB_URI`             MongoDB Atlas connection string
-  `JWT_SECRET`              Secret used for JWT authentication
-  `FRONTEND_URL`            Allowed frontend origin
-  `CLOUDINARY_CLOUD_NAME`   Cloudinary cloud name
-  `CLOUDINARY_API_KEY`      Cloudinary API key
-  `CLOUDINARY_API_SECRET`   Cloudinary API secret
-  `GEMINI_API_KEY`          Gemini API key
-  `GEMINI_API_URL`          Gemini API endpoint
-
-### Frontend
-
-  Variable         Purpose
-  ---------------- ----------------------
-  `VITE_API_URL`   Backend API base URL
-
-Never commit environment files or secret credentials to GitHub.
-
-## Authentication
-
-The application uses JWT-based authentication.
-
-``` text
-Register
-   |
-   v
-Password hashing
-   |
-   v
-MongoDB
-   |
-   v
-Login
-   |
-   v
-JWT token
-   |
-   v
-Authenticated API requests
+```bash
+npm run build
 ```
 
-Authenticated requests use a bearer token:
+The production output is generated in:
 
-``` http
-Authorization: Bearer <token>
+```text
+frontend/dist
 ```
-
-## API Routes
-
-The application includes user and assistant-related API endpoints,
-including:
-
-``` text
-/api/user/current
-/api/user/update
-/api/user/askToAssistant
-```
-
-The exact route behavior depends on the backend implementation.
-
-## MongoDB Atlas
-
-For production, MongoDB Atlas is used instead of a local MongoDB server.
-
-Example:
-
-``` env
-MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/virtualAssistant
-```
-
-Do not publish the database username or password.
-
-## Cloudinary
-
-Cloudinary is used for assistant image/media management.
-
-Required backend variables:
-
-``` env
-CLOUDINARY_CLOUD_NAME=...
-CLOUDINARY_API_KEY=...
-CLOUDINARY_API_SECRET=...
-```
-
-Keep the API secret on the backend only.
-
-## Gemini API
-
-The Gemini API powers the AI assistant functionality.
-
-Required backend configuration:
-
-``` env
-GEMINI_API_KEY=...
-GEMINI_API_URL=...
-```
-
-The Gemini API key must never be exposed in frontend source code.
 
 ## Deployment
 
-### Frontend --- Vercel
+### Vercel
 
-Recommended Vercel configuration:
+Frontend configuration:
 
-``` text
+```text
 Root Directory: frontend
 Framework: Vite
 Build Command: npm run build
@@ -331,223 +450,286 @@ Output Directory: dist
 
 Production environment variable:
 
-``` env
+```env
 VITE_API_URL=https://virtual-assistant-backend-7hsm.onrender.com
 ```
 
-After changing Vite environment variables, redeploy the frontend.
+### Render
 
-### Backend --- Render
+Backend configuration:
 
-Recommended Render configuration:
-
-``` text
+```text
 Root Directory: backend
 Build Command: npm install
 Start Command: npm start
 ```
 
-Configure all backend environment variables in Render.
+Required Render environment variables:
 
-For production:
-
-``` env
-FRONTEND_URL=https://YOUR-VERCEL-DOMAIN.vercel.app
+```text
+MONGODB_URI
+JWT_SECRET
+FRONTEND_URL
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+GEMINI_API_KEY
+GEMINI_API_URL
 ```
 
-The backend should use the Render-provided `PORT`:
+The backend should use the Render-provided port:
 
-``` js
-const PORT = process.env.PORT || 5000;
+```js
+const port = process.env.PORT || 5000;
 ```
 
-### Production Architecture
+### MongoDB Atlas
 
-``` text
-                    Internet
-                       |
-             +---------+---------+
-             |                   |
-             v                   v
-          Vercel              Render
-       React Frontend      Express Backend
-                                 |
-                    +------------+------------+
-                    |            |            |
-                    v            v            v
-               MongoDB       Cloudinary     Gemini
-                 Atlas
-```
+MongoDB Atlas is used as the production database.
 
-## Security
+The connection string is stored in:
 
-Never commit:
-
-``` text
-.env
-.env.local
-.env.production
-```
-
-Never expose:
-
--   MongoDB passwords
--   JWT secrets
--   Cloudinary API secrets
--   Gemini API keys
--   Other private credentials
-
-If a credential is accidentally exposed publicly, revoke or rotate it
-immediately.
-
-## Troubleshooting
-
-### MongoDB URI is undefined
-
-If Render logs show:
-
-``` text
-The `uri` parameter to `openUri()` must be a string, got "undefined"
-```
-
-make sure the environment variable name in Render exactly matches the
-name used in the backend.
-
-For example:
-
-``` js
-mongoose.connect(process.env.MONGODB_URI);
-```
-
-requires:
-
-``` text
+```env
 MONGODB_URI
 ```
 
-in Render.
+Database credentials must never be committed to the repository.
+
+### Cloudinary
+
+Cloudinary stores uploaded assistant images.
+
+Required variables:
+
+```text
+CLOUDINARY_CLOUD_NAME
+CLOUDINARY_API_KEY
+CLOUDINARY_API_SECRET
+```
+
+## CORS
+
+The frontend and backend use different domains in production, so CORS must allow the deployed frontend origin.
+
+Backend:
+
+```js
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true,
+  })
+);
+```
+
+Production example:
+
+```env
+FRONTEND_URL=https://virtual-assistant-black.vercel.app
+```
+
+Do not add a trailing slash.
+
+## Security
+
+- Passwords are hashed with bcryptjs.
+- JWT authentication is handled server-side.
+- Authentication tokens are stored in HTTP-only cookies.
+- Production cookies use secure cross-site configuration.
+- CORS is restricted to the configured frontend origin.
+- API keys are stored in environment variables.
+- `.env` files are excluded from Git.
+- Cloudinary and Gemini credentials remain server-side.
+- Protected routes use authentication middleware.
+- MongoDB credentials are not stored in source code.
+
+## Common Production Issues
 
 ### CORS Error
 
-Make sure production uses the Vercel frontend URL:
+Verify:
 
-``` env
-FRONTEND_URL=https://YOUR-VERCEL-DOMAIN.vercel.app
+```env
+FRONTEND_URL=https://virtual-assistant-black.vercel.app
 ```
 
-Do not use `http://localhost:5173` in production.
+and:
 
-### Frontend Cannot Connect to Backend
+```js
+credentials: true
+```
+
+### Token Not Found
+
+Verify that login/signup cookies use:
+
+```js
+httpOnly: true
+secure: true
+sameSite: "none"
+```
+
+and frontend Axios requests use:
+
+```js
+withCredentials: true
+```
+
+### MongoDB Connection Error
+
+Verify the `MONGODB_URI` variable exists in Render and MongoDB Atlas permits the deployed backend to connect.
+
+### Assistant Update Error
 
 Check:
 
-``` env
-VITE_API_URL=https://virtual-assistant-backend-7hsm.onrender.com
+- Authentication cookie
+- CORS configuration
+- Multer field name
+- Cloudinary credentials
+- Cloudinary upload logs
+- Backend Render logs
+
+### Vercel React Route 404
+
+For client-side React routes such as `/login`, `/signup`, `/customize`, and `/customize2`, Vercel should rewrite unknown routes to the React entry point. The project includes `vercel.json` for SPA routing.
+
+## Application Flow
+
+```text
+User
+ |
+ v
+Vercel React Frontend
+ |
+ +-------------------------+
+ |                         |
+ v                         v
+Authentication         Assistant UI
+ |                         |
+ v                         v
+Render Express API     Voice / Text
+ |                         |
+ |                         v
+ |                    Gemini API
+ |                         |
+ |                         v
+ |                  Intent / Response
+ |                         |
+ +------------+------------+
+              |
+              v
+        MongoDB Atlas
+              |
+              +------------------+
+              |                  |
+              v                  v
+         User Data         Command History
+
+Assistant Image
+      |
+      v
+    Multer
+      |
+      v
+  Cloudinary
+      |
+      v
+ Image URL
+      |
+      v
+  MongoDB
 ```
 
-Then rebuild and redeploy the frontend.
+## Frontend Pages
 
-### Case-Sensitive Import Errors
+### Sign Up
 
-Vercel builds on Linux, where file names are case-sensitive.
+Creates a new user account.
 
-For example, if the file is:
+### Login
 
-``` text
-UserContext.jsx
-```
+Authenticates an existing user.
 
-the import should match the exact casing:
+### Home
 
-``` js
-import UserContext from "./context/UserContext.jsx";
-```
+Provides the primary virtual assistant interface, including voice interaction and assistant responses.
 
-Not:
+### Customize
 
-``` js
-import UserContext from "./context/userContext.jsx";
-```
+Allows the user to choose an assistant image and configure the assistant.
 
-## Useful Commands
+### Customize2
 
-### Backend
+Completes assistant configuration and sends the assistant update request to the backend.
 
-``` bash
-cd backend
-npm install
-npm run dev
-```
+## Backend Responsibilities
 
-### Frontend
+- User registration
+- Login and logout
+- JWT generation and verification
+- User profile retrieval
+- Assistant configuration
+- Image upload handling
+- Cloudinary integration
+- Gemini integration
+- Command processing
+- User history persistence
+- MongoDB operations
+- CORS and API security
 
-``` bash
-cd frontend
-npm install
-npm run dev
-```
+## Frontend Responsibilities
 
-### Frontend Production Build
+- React routing
+- Authentication interface
+- Assistant customization
+- Voice recognition
+- Text-to-speech
+- API communication
+- Responsive user interface
+- Client-side user context
+- Assistant interaction
 
-``` bash
-cd frontend
-npm run build
-```
+## Git Workflow
 
-### Git
-
-``` bash
+```bash
 git status
 git add .
 git commit -m "Update application"
 git push origin main
 ```
 
-## Production Checklist
-
--   [ ] Frontend deployed on Vercel
--   [ ] Backend deployed on Render
--   [ ] MongoDB Atlas connected
--   [ ] `MONGODB_URI` configured on Render
--   [ ] `JWT_SECRET` configured
--   [ ] Cloudinary credentials configured
--   [ ] Gemini credentials configured
--   [ ] `FRONTEND_URL` points to the Vercel domain
--   [ ] `VITE_API_URL` points to the Render backend
--   [ ] CORS configured correctly
--   [ ] Registration tested
--   [ ] Login tested
--   [ ] Protected routes tested
--   [ ] Assistant customization tested
--   [ ] Image upload tested
--   [ ] AI response tested
--   [ ] Logout tested
--   [ ] No secrets committed to GitHub
+Before pushing, make sure no `.env` files or credentials are staged.
 
 ## Future Improvements
 
--   Conversation history
--   Multiple assistant personalities
--   Streaming AI responses
--   Improved voice controls
--   Refresh-token authentication
--   Email verification
--   Password reset
--   Admin dashboard
--   Usage analytics
--   Improved mobile accessibility
--   Progressive Web App support
+- Dedicated conversation history UI
+- Streaming AI responses
+- More assistant personalities
+- Additional voice options
+- More command integrations
+- Improved intent detection
+- User profile management
+- Accessibility improvements
+- Progressive Web App support
+- API rate limiting
+- Automated testing
+- CI/CD pipeline
+- Centralized error monitoring
+- Improved request validation
+
+## License
+
+This project is intended for educational, portfolio, and demonstration purposes.
+
+Add an open-source license file if the project is intended for public redistribution.
 
 ## Author
 
 **Lavkush Vishwakarma**
 
-B.Tech --- Computer Science and Engineering
+Bachelor of Technology - Computer Science and Engineering
+
+Quantum University, Roorkee
 
 GitHub: https://github.com/lav71
-
-## License
-
-This project is currently intended for educational, portfolio, and
-development purposes. Add an appropriate open-source license if you plan
-to distribute the project under an open-source license.
