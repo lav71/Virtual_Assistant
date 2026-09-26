@@ -26,34 +26,61 @@ export const getCurrentUser = async (req, res) => {
 
 export const updateAssistant = async (req, res) => {
     try {
-
         const { assistantName, imageUrl } = req.body;
 
-        let assistantImage;
+        if (!assistantName || !assistantName.trim()) {
+            return res.status(400).json({
+                success: false,
+                message: "Assistant name is required",
+            });
+        }
 
+        let assistantImage = imageUrl || "";
+
+        // If a new image is uploaded
         if (req.file) {
-            assistantImage = await uploadOnCloudinary(req.file.path);
-        } else {
-            assistantImage = imageUrl;
+            assistantImage = await uploadOnCloudinary(req.file.buffer);
+        }
+
+        // Image is required if no previous image exists
+        if (!assistantImage) {
+            return res.status(400).json({
+                success: false,
+                message: "Assistant image is required",
+            });
         }
 
         const user = await User.findByIdAndUpdate(
             req.user_id,
             {
-                assistantName: assistantName,
-                assistantImage: assistantImage
+                assistantName: assistantName.trim(),
+                assistantImage,
             },
-            { new: true }
+            {
+                new: true,
+                runValidators: true,
+            }
         ).select("-password");
 
-        return res.status(200).json(user);
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Assistant updated successfully",
+            user,
+        });
 
     } catch (error) {
+        console.error("UPDATE ASSISTANT ERROR:", error);
 
-        console.log(error);
-
-        return res.status(400).json({
-            message: "Update Assistant Error"
+        return res.status(500).json({
+            success: false,
+            message: error.message || "Update Assistant Error",
         });
     }
 };
